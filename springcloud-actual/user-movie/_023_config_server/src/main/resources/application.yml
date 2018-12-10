@@ -1,0 +1,17 @@
+#web服务端口
+server:
+  port: 8900
+spring:
+  application:
+    name: 023-config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/mylava/springcloud-config-repo.git
+#日志
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

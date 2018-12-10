@@ -1,0 +1,67 @@
+#端口号
+server:
+  port: 8079
+  servlet:
+    path: /
+spring:
+  #服务名称
+  application:
+    #使用ribbon的时候，name不能有下划线
+    name: 004-provider-user-eureka
+  #jpa配置
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  #数据源
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/user_movie?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 100
+    minIdle: 500
+    maxActive: 1000
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    #配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+#log配置
+logging:
+  level:
+    root: info
+    org.hibernate: info
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    org.hibernate.type.descriptor.sql.BasicExtractor: trace
+    cn.mylava: debug
+eureka:
+  client:
+    # EurekaClientAutoConfiguration spring boot 2.0之后的属性名
+#    prefer-ip-address: true
+    #spring boot 2.0之后的属性名
+#    service-url:
+    #spring boot 2.0之前的属性名
+    serviceUrl:
+      defaultZone: http://admin:admin@${eureka.instance.hostname}:8761/eureka
+    #EurekaDiscoveryClientConfiguration 类中定义
+    healthcheck:
+      enabled: true
+  instance:
+    hostname: localhost
+    # 默认为 ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${server.port}}
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+    statusPageUrlPath: ${server.servlet.path}/info
+    healthCheckUrlPath: ${server.servlet.path}/health
+    homePageUrl: ${eureka.instance.hostname}/
+    prefer-ip-address: true
